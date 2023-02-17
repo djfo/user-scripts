@@ -7,7 +7,7 @@
 
 const langs = ["en", "de", "fr", "it"];
 
-const links = [...document.querySelectorAll(".interlanguage-link a")];
+const links = [...document.querySelectorAll(".interlanguage-link a")] as HTMLAnchorElement[];
 
 const map = new Map(links.flatMap(link => {
   const href = link.href;
@@ -22,7 +22,7 @@ const bindings = new Map(langs.map((lang, index) => [keyCode1 + index, lang]));
 const lis = langs.map((lang, index) => {
   const value = map.get(lang);
   const li = document.createElement("li");
-  li.style = "margin: 0; padding: 0";
+  li.setAttribute("style", "margin: 0; padding: 0");
   const textNode = document.createTextNode(`${index + 1} ${lang}`);
   if (value !== undefined) {
     const { href } = value;
@@ -36,9 +36,9 @@ const lis = langs.map((lang, index) => {
   return li;
 });
 const div = document.createElement("div");
-div.style = "position: fixed; top: 0; right: 0; background: yellow";
+div.setAttribute("style", "position: fixed; top: 0; right: 0; background: yellow");
 const ul = document.createElement("ul");
-ul.style = "list-style: none; margin: 0; padding: 0";
+ul.setAttribute("style", "list-style: none; margin: 0; padding: 0");
 ul.append(...lis);
 div.appendChild(ul);
 document.body.appendChild(div);
@@ -54,7 +54,9 @@ document.addEventListener('keydown', (ev) => {
 
   if (binding !== undefined) {
     const lang = binding;
-    const { href } = map.get(lang);
-    window.location = href;
+    const value = map.get(lang);
+    if (value !== undefined) {
+      window.location.replace(value.href);
+    }
   }
 });
