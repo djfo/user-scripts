@@ -19,15 +19,11 @@ const map = new Map(links.flatMap(link => {
 const keyCode1 = 0x31;
 const bindings = new Map(langs.map((lang, index) => [keyCode1 + index, lang]));
 
-const ul = document.createElement("ul");
-ul.style = "list-style: none; margin: 0; padding: 0";
-let index = 0;
-for (const lang of langs) {
-  index++;
+const lis = langs.map((lang, index) => {
   const value = map.get(lang);
   const li = document.createElement("li");
   li.style = "margin: 0; padding: 0";
-  const textNode = document.createTextNode(`${index} ${lang}`);
+  const textNode = document.createTextNode(`${index + 1} ${lang}`);
   if (value !== undefined) {
     const { href } = value;
     const a = document.createElement("a");
@@ -37,10 +33,13 @@ for (const lang of langs) {
   } else {
     li.appendChild(textNode);
   }
-  ul.appendChild(li);
-}
+  return li;
+});
 const div = document.createElement("div");
 div.style = "position: fixed; top: 0; right: 0; background: yellow";
+const ul = document.createElement("ul");
+ul.style = "list-style: none; margin: 0; padding: 0";
+ul.append(...lis);
 div.appendChild(ul);
 document.body.appendChild(div);
 
