@@ -1,2 +1,11 @@
 # tsc
 tsconfig.tsbuildinfo
+
+# npm
+node_modules/
+
+# vim
+*.swp
+*.swo
+
+dist/
