@@ -38,8 +38,10 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
       const a = document.createElement("a");
       a.appendChild(textNode);
       a.href = href;
+      li.setAttribute("style", li.getAttribute("style") + "; font-weight: bold");
       li.appendChild(a);
     } else {
+      li.setAttribute("style", li.getAttribute("style") + "; color: gray");
       li.appendChild(textNode);
     }
     return li;
