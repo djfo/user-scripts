@@ -49,7 +49,7 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
   const div = document.createElement("div");
   div.setAttribute(
     "style",
-    "position: fixed; top: 0; right: 0; background: yellow"
+    "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
   );
   const ul = document.createElement("ul");
   ul.setAttribute("style", "list-style: none; margin: 0; padding: 0");
