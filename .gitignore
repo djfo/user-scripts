@@ -1,3 +1,7 @@
+# build artifacts
+dist/
+bundle/
+
 # tsc
 tsconfig.tsbuildinfo
 
