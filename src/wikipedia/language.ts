@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name     Unnamed Script 543499
+// @name     Add keyboard shortcuts to select Wikipedia inter-language links
 // @version  1
 // @grant    GM.getValue
 // @grant    GM.setValue
