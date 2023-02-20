@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name     Unnamed Script 543499
 // @version  1
-// @grant    none
+// @grant    GM.getValue
+// @grant    GM.setValue
 // @include https://*.wikipedia.org/wiki/*
 // ==/UserScript==
 
@@ -58,8 +59,50 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
   return div;
 }
 
-function init() {
-  const langs = ["en", "de", "fr", "it"];
+function parseLanguageCodesThrows(raw: string): string[] {
+  const parts = raw.split(/,/);
+  const re = /^[a-z]+$/;
+  const invalid = parts.filter(part => !re.test(part));
+  if (invalid.length > 0) {
+    const message = `The following language codes are invalid: ${invalid.join(", ")}.`;
+    throw new Error(message);
+  }
+  return parts;
+}
+
+function setUserLanguageCodes(languageCodes: string[]): void {
+  const serialized = languageCodes.join(",");
+  GM.setValue("languageCodes", serialized);
+}
+
+function deleteWhitespace(str: string): string {
+  return str.replace(/\s/g, "");
+}
+
+function setUserLanguageCodesRaw(raw: string): void {
+  const languageCodes = parseLanguageCodesThrows(deleteWhitespace(raw));
+  setUserLanguageCodes(languageCodes);
+}
+
+async function getUserLanguageCodes(): Promise<string[]> {
+  const defaultLanguageCodes = ["en", "de", "fr", "it", "nl"];
+  try {
+    const raw = await GM.getValue("languageCodes");
+    if (typeof raw !== "string") {
+      throw new Error("No value found.");
+    }
+    return parseLanguageCodesThrows(raw);
+  } catch {
+    console.error("Failed to get language codes from user defaults.");
+    return defaultLanguageCodes;
+  }
+}
+
+async function init(): Promise<void> {
+  const languageCodes: string[] = await getUserLanguageCodes();
+
+  const langs = languageCodes;
+
   const keyCode1 = 0x31;
   const links = getInterLanguageLinks();
   const map = makeMap(links, langs);
