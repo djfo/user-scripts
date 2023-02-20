@@ -1,11 +1,3 @@
-// ==UserScript==
-// @name     Add keyboard shortcuts to select Wikipedia inter-language links
-// @version  1
-// @grant    GM.getValue
-// @grant    GM.setValue
-// @include https://*.wikipedia.org/wiki/*
-// ==/UserScript==
-
 function getInterLanguageLinks(): HTMLAnchorElement[] {
   const elements = [...document.querySelectorAll(".interlanguage-link a")];
   if (elements.every((element) => element instanceof HTMLAnchorElement)) {
