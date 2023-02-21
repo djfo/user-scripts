@@ -70,18 +70,18 @@ function parseLanguageCodesThrows(raw: string): string[] {
   return parts;
 }
 
-function setUserLanguageCodes(languageCodes: string[]): void {
+function setUserLanguageCodes(languageCodes: string[]): Promise<void> {
   const serialized = languageCodes.join(",");
-  GM.setValue("languageCodes", serialized);
+  return GM.setValue("languageCodes", serialized);
 }
 
 function deleteWhitespace(str: string): string {
   return str.replace(/\s/g, "");
 }
 
-function setUserLanguageCodesRaw(raw: string): void {
+function setUserLanguageCodesRaw(raw: string): Promise<void> {
   const languageCodes = parseLanguageCodesThrows(deleteWhitespace(raw));
-  setUserLanguageCodes(languageCodes);
+  return setUserLanguageCodes(languageCodes);
 }
 
 async function getUserLanguageCodes(): Promise<string[]> {
