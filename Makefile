@@ -2,7 +2,7 @@
 
 build:
 	npx tsc
-	npx webpack
+	./bin/bundle.sh
 
 clean:
 	rm -r dist

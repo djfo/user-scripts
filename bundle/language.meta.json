@@ -1,0 +1,7 @@
+{
+  "entry": "wikipedia/language.js",
+  "userScript": {
+    "name": "Wikipedia: Add keyboard shortcuts to select inter-language links",
+    "version": 3
+  }
+}

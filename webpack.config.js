@@ -1,10 +1,11 @@
 const webpack = require('webpack');
+const fs = require('fs/promises');
 
-function makeBanner(name) {
+function makeBanner({ name, version }) {
   const lines = [
     "==UserScript==",
     `@name     ${name}`,
-    "@version  1",
+    `@version  ${version}`,
     "@grant    none",
     "@include https://*.wikipedia.org/wiki/*",
     "==/UserScript=="
@@ -12,21 +13,28 @@ function makeBanner(name) {
   return lines.map(line => `// ${line}`).join("\n");
 }
 
-module.exports = {
-  entry: {
-    language: "./dist/wikipedia/language.js"
-  },
-  output: {
-    path: __dirname + '/bundle',
-    filename: "[name].js"
-  },
-  optimization: {
-    minimize: false
-  },
-  plugins: [
-    new webpack.BannerPlugin({
-      banner: makeBanner("Wikipedia: Add keyboard shortcuts to select inter-language links"),
-      raw: true
-    })
-  ]
+module.exports = async env => {
+  const raw = await fs.readFile(`./bundle/${env.target}.meta.json`, 'utf8')
+  const meta = JSON.parse(raw);
+
+  const entry = {
+    [env.target]: `./dist/${meta.entry}`
+  }
+
+  return {
+    entry,
+    output: {
+      path: __dirname + '/bundle',
+      filename: "[name].js"
+    },
+    optimization: {
+      minimize: false
+    },
+    plugins: [
+      new webpack.BannerPlugin({
+        banner: makeBanner(meta.userScript),
+        raw: true
+      })
+    ]
+  }
 }
