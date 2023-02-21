@@ -98,6 +98,27 @@ async function getUserLanguageCodes(): Promise<string[]> {
   }
 }
 
+function makeButtonDiv(): HTMLDivElement {
+  const div = document.createElement("div");
+  const button = document.createElement("button");
+  const gear = "\u2699";
+  button.appendChild(document.createTextNode(gear));
+  button.addEventListener("click", async () => {
+    const userLanguageCodes = await getUserLanguageCodes();
+    const newUserLanguageCodes = window.prompt(
+      "Enter language codes separated by commas:",
+      userLanguageCodes.join(", ")
+    );
+    if (newUserLanguageCodes === null) {
+      return;
+    }
+    setUserLanguageCodesRaw(newUserLanguageCodes);
+    location.reload();
+  });
+  div.appendChild(button);
+  return div;
+}
+
 async function init(): Promise<void> {
   const languageCodes: string[] = await getUserLanguageCodes();
 
@@ -108,6 +129,8 @@ async function init(): Promise<void> {
   const map = makeMap(links, langs);
 
   const div = makeLanguageMenuHtml(langs, map);
+  div.appendChild(makeButtonDiv());
+
   document.body.appendChild(div);
 
   const bindings = new Map(
