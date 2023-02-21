@@ -11,5 +11,3 @@ node_modules/
 # vim
 *.swp
 *.swo
-
-dist/
