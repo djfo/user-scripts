@@ -25,7 +25,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin({
-      banner: makeBanner("Add keyboard shortcuts for inter-language links"),
+      banner: makeBanner("Wikipedia: Add keyboard shortcuts to select inter-language links"),
       raw: true
     })
   ]
