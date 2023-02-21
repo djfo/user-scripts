@@ -60,7 +60,7 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
 }
 
 function parseLanguageCodesThrows(raw: string): string[] {
-  const parts = raw.split(/,/);
+  const parts = deleteWhitespace(raw).split(/,/);
   const re = /^[a-z]+$/;
   const invalid = parts.filter(part => !re.test(part));
   if (invalid.length > 0) {
@@ -80,7 +80,7 @@ function deleteWhitespace(str: string): string {
 }
 
 function setUserLanguageCodesRaw(raw: string): Promise<void> {
-  const languageCodes = parseLanguageCodesThrows(deleteWhitespace(raw));
+  const languageCodes = parseLanguageCodesThrows(raw);
   return setUserLanguageCodes(languageCodes);
 }
 
