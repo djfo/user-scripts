@@ -60,23 +60,23 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
 }
 
 function parseLanguageCodesThrows(raw: string): string[] {
-  const parts = deleteWhitespace(raw).split(/,/);
+  const parts = raw.split(/,/);
+  const filtered = parts.flatMap(part => {
+    const trimmed = part.trim();
+    return trimmed.length === 0 ? [] : [trimmed];
+  });
   const re = /^[a-z]+$/;
-  const invalid = parts.filter(part => !re.test(part));
+  const invalid = filtered.filter(part => !re.test(part));
   if (invalid.length > 0) {
     const message = `The following language codes are invalid: ${invalid.join(", ")}.`;
     throw new Error(message);
   }
-  return parts;
+  return filtered;
 }
 
 function setUserLanguageCodes(languageCodes: string[]): Promise<void> {
   const serialized = languageCodes.join(",");
   return GM.setValue("languageCodes", serialized);
-}
-
-function deleteWhitespace(str: string): string {
-  return str.replace(/\s/g, "");
 }
 
 function setUserLanguageCodesRaw(raw: string): Promise<void> {
