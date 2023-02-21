@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name     Add keyboard shortcuts to select Wikipedia inter-language links
-// @version  1
+// @name     Wikipedia: Add keyboard shortcuts to select inter-language links
+// @version  2
 // @grant    GM.getValue
 // @grant    GM.setValue
 // @include https://*.wikipedia.org/wiki/*
