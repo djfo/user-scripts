@@ -1,3 +1,5 @@
+import { a, button, div, href, li, style, text, ul } from "../common/html";
+
 function getInterLanguageLinks(): HTMLAnchorElement[] {
   const elements = [...document.querySelectorAll(".interlanguage-link a")];
   if (elements.every((element) => element instanceof HTMLAnchorElement)) {
@@ -23,32 +25,22 @@ function makeMap(links: HTMLAnchorElement[], langs: string[]): M {
 function makeLanguageMenuHtml(langs: string[], map: M) {
   const lis = langs.map((lang, index) => {
     const value = map.get(lang);
-    const li = document.createElement("li");
-    li.setAttribute("style", "margin: 0; padding: 0");
-    const textNode = document.createTextNode(`${index + 1} ${lang}`);
+
+    const baseStyle = "margin: 0; padding: 0";
+    const children = [text(`${index + 1} ${lang}`)];
+
     if (value !== undefined) {
-      const { href } = value;
-      const a = document.createElement("a");
-      a.appendChild(textNode);
-      a.href = href;
-      li.setAttribute("style", li.getAttribute("style") + "; font-weight: bold");
-      li.appendChild(a);
+      const { href: href_ } = value;
+      return li([style(baseStyle + "; font-weight: bold")], [a([href(href_)], children)]);
     } else {
-      li.setAttribute("style", li.getAttribute("style") + "; color: gray");
-      li.appendChild(textNode);
+      return li([style(baseStyle + "; color: gray")], children);
     }
-    return li;
   });
-  const div = document.createElement("div");
-  div.setAttribute(
-    "style",
-    "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
+
+  return div(
+    [style("position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm")],
+    [ul([style("list-style: none; margin: 0; padding: 0")], lis)]
   );
-  const ul = document.createElement("ul");
-  ul.setAttribute("style", "list-style: none; margin: 0; padding: 0");
-  ul.append(...lis);
-  div.appendChild(ul);
-  return div;
 }
 
 function parseLanguageCodesThrows(raw: string): string[] {
@@ -90,11 +82,9 @@ async function getUserLanguageCodes(): Promise<string[]> {
   }
 }
 
-function makeConfiugreButton(): HTMLButtonElement {
-  const button = document.createElement("button");
-  const gear = "\u2699";
-  button.appendChild(document.createTextNode(gear));
-  button.addEventListener("click", async () => {
+function makeConfiugreButton(): HTMLElement {
+  const button_ = button([], [text("\u2699")]);
+  button_.addEventListener("click", async () => {
     const userLanguageCodes = await getUserLanguageCodes();
     const newUserLanguageCodes = window.prompt(
       "Enter language codes separated by commas:",
@@ -106,7 +96,7 @@ function makeConfiugreButton(): HTMLButtonElement {
     setUserLanguageCodesRaw(newUserLanguageCodes);
     location.reload();
   });
-  return button;
+  return button_;
 }
 
 async function init(): Promise<void> {
@@ -118,10 +108,10 @@ async function init(): Promise<void> {
   const links = getInterLanguageLinks();
   const map = makeMap(links, langs);
 
-  const div = makeLanguageMenuHtml(langs, map);
-  div.appendChild(makeConfiugreButton());
-
-  document.body.appendChild(div);
+  document.body.appendChild(div(
+    [],
+    [makeLanguageMenuHtml(langs, map), makeConfiugreButton()]
+  ));
 
   const bindings = new Map(
     langs.map((lang, index) => [keyCode1 + index, lang])
