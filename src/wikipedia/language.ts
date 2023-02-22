@@ -82,6 +82,7 @@ function setUserLanguageCodesRaw(raw: string): Promise<void> {
 }
 
 async function getUserLanguageCodes(): Promise<string[]> {
+  // https://en.wikipedia.org/wiki/List_of_Wikipedias#Basic_list
   const defaultLanguageCodes = [
     "en",
     "fr",
