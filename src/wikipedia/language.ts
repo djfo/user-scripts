@@ -1,3 +1,4 @@
+import { zip } from "../common/array";
 import { a, button, div, href, li, style, text, ul } from "../common/html";
 
 function getInterLanguageLinks(): HTMLAnchorElement[] {
@@ -35,7 +36,7 @@ function makeLanguageMenuHtml(langs: string[], map: M): HTMLElement {
         [a([href(value.href)], children)]
       );
     } else {
-      return li([style(baseStyle + "; color: gray")], children);
+      return li([style(baseStyle + "; opacity: 0.3")], children);
     }
   });
 
@@ -121,7 +122,6 @@ async function init(): Promise<void> {
 
   const langs = languageCodes;
 
-  const keyCode1 = 0x31;
   const links = getInterLanguageLinks();
   const map = makeMap(links, langs);
 
@@ -136,9 +136,10 @@ async function init(): Promise<void> {
     )
   );
 
-  const bindings = new Map(
-    langs.map((lang, index) => [keyCode1 + index, lang])
-  );
+  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+  const bindings = new Map(zip(keys, langs));
+
   document.addEventListener("keydown", (ev) => {
     const activeElement = document.activeElement;
 
@@ -146,7 +147,7 @@ async function init(): Promise<void> {
       return;
     }
 
-    const binding = bindings.get(ev.keyCode);
+    const binding = bindings.get(ev.key);
 
     if (binding !== undefined) {
       const lang = binding;
