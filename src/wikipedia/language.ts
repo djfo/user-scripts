@@ -22,7 +22,7 @@ function makeMap(links: HTMLAnchorElement[], langs: string[]): M {
   );
 }
 
-function makeLanguageMenuHtml(langs: string[], map: M) {
+function makeLanguageMenuHtml(langs: string[], map: M): HTMLElement {
   const lis = langs.map((lang, index) => {
     const value = map.get(lang);
 
@@ -30,10 +30,9 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
     const children = [text(`${index + 1} ${lang}`)];
 
     if (value !== undefined) {
-      const { href: href_ } = value;
       return li(
         [style(baseStyle + "; font-weight: bold")],
-        [a([href(href_)], children)]
+        [a([href(value.href)], children)]
       );
     } else {
       return li([style(baseStyle + "; color: gray")], children);
