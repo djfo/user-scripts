@@ -69,7 +69,7 @@ function setUserLanguageCodesRaw(raw: string): Promise<void> {
 }
 
 async function getUserLanguageCodes(): Promise<string[]> {
-  const defaultLanguageCodes = ["en", "de", "fr", "it", "nl"];
+  const defaultLanguageCodes = ["en", "fr", "de", "ja", "es", "ru", "pt", "it", "zh"];
   try {
     const raw = await GM.getValue("languageCodes");
     if (typeof raw !== "string") {
