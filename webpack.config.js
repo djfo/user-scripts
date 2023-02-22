@@ -1,17 +1,14 @@
 const webpack = require('webpack');
 const fs = require('fs/promises');
 
-function makeBanner({ name, version }) {
-  const lines = [
-    "==UserScript==",
-    `@name     ${name}`,
-    `@version  ${version}`,
-    "@grant    GM.getValue",
-    "@grant    GM.setValue",
-    "@include https://*.wikipedia.org/wiki/*",
-    "==/UserScript=="
-  ];
-  return lines.map(line => `// ${line}`).join("\n");
+function makeBanner({ name, version, grant, include }) {
+  const lines = [].concat(
+    ["==UserScript==", `@name ${name}`, `@version ${version}`],
+    grant.map((g) => `@grant ${g}`),
+    include.map((i) => `@include ${i}`),
+    ["==/UserScript=="]
+  );
+  return lines.map((line) => `// ${line}`).join("\n");
 }
 
 module.exports = async env => {
