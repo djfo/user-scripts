@@ -1,8 +1,11 @@
 .PHONY: build clean
 
-build:
+build: node_modules
 	npx tsc
 	./bin/bundle.sh
+
+node_modules:
+	npm ci
 
 clean:
 	rm -fr dist
