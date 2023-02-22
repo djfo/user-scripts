@@ -10,25 +10,27 @@ function getInterLanguageLinks(): HTMLAnchorElement[] {
   }
 }
 
-type M = Map<string, { lang: string; href: string }>;
+type M = Map<string, { languageCode: string; href: string }>;
 
-function makeMap(links: HTMLAnchorElement[], langs: string[]): M {
+function makeMap(links: HTMLAnchorElement[], languageCodes: string[]): M {
   return new Map(
     links.flatMap((link) => {
       const href = link.href;
-      const lang = link.lang;
-      const record = { lang, href };
-      return langs.includes(lang) ? [[lang, record]] : [];
+      const languageCode = link.lang;
+      const record = { languageCode, href };
+      return languageCodes.includes(languageCode)
+        ? [[languageCode, record]]
+        : [];
     })
   );
 }
 
-function makeLanguageMenuHtml(langs: string[], map: M): HTMLElement {
-  const lis = langs.map((lang, index) => {
-    const value = map.get(lang);
+function makeLanguageMenuHtml(languageCodes: string[], map: M): HTMLElement {
+  const lis = languageCodes.map((languageCode, index) => {
+    const value = map.get(languageCode);
 
     const baseStyle = "margin: 0; padding: 0";
-    const children = [text(`${index + 1} ${lang}`)];
+    const children = [text(`${index + 1} ${languageCode}`)];
 
     if (value !== undefined) {
       return li(
@@ -120,10 +122,8 @@ function makeConfigureButton(): HTMLElement {
 async function init(): Promise<void> {
   const languageCodes: string[] = await getUserLanguageCodes();
 
-  const langs = languageCodes;
-
   const links = getInterLanguageLinks();
-  const map = makeMap(links, langs);
+  const map = makeMap(links, languageCodes);
 
   document.body.appendChild(
     div(
@@ -132,13 +132,13 @@ async function init(): Promise<void> {
           "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
         ),
       ],
-      [makeLanguageMenuHtml(langs, map), makeConfigureButton()]
+      [makeLanguageMenuHtml(languageCodes, map), makeConfigureButton()]
     )
   );
 
   const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-  const bindings = new Map(zip(keys, langs));
+  const bindings = new Map(zip(keys, languageCodes));
 
   document.addEventListener("keydown", (ev) => {
     const activeElement = document.activeElement;
