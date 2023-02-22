@@ -5,6 +5,6 @@
 Install dependencies and compile project
 
     % npm ci
-    % npx tsc
+    % make
 
-The user scripts can now be found in the `dist` directory.
+The user scripts can now be found in the `build` directory.

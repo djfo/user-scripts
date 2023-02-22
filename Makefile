@@ -5,5 +5,7 @@ build:
 	./bin/bundle.sh
 
 clean:
-	rm -r dist
-	rm tsconfig.tsbuildinfo
+	rm -fr dist
+	rm -fr node_modules
+	rm -f build/**/*.js
+	rm -f tsconfig.tsbuildinfo
