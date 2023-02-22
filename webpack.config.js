@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const fs = require('fs/promises');
+const webpack = require("webpack");
+const fs = require("fs/promises");
 
 function makeBanner({ name, version, grant, include }) {
   const lines = [].concat(
@@ -11,28 +11,28 @@ function makeBanner({ name, version, grant, include }) {
   return lines.map((line) => `// ${line}`).join("\n");
 }
 
-module.exports = async env => {
-  const raw = await fs.readFile(`./bundle/${env.target}.meta.json`, 'utf8')
+module.exports = async (env) => {
+  const raw = await fs.readFile(`./bundle/${env.target}.meta.json`, "utf8");
   const meta = JSON.parse(raw);
 
   const entry = {
-    [env.target]: `./dist/${meta.entry}`
-  }
+    [env.target]: `./dist/${meta.entry}`,
+  };
 
   return {
     entry,
     output: {
-      path: __dirname + '/bundle',
-      filename: "[name].js"
+      path: __dirname + "/bundle",
+      filename: "[name].js",
     },
     optimization: {
-      minimize: false
+      minimize: false,
     },
     plugins: [
       new webpack.BannerPlugin({
         banner: makeBanner(meta.userScript),
-        raw: true
-      })
-    ]
-  }
-}
+        raw: true,
+      }),
+    ],
+  };
+};
