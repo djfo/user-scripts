@@ -6,7 +6,8 @@ function makeBanner({ name, version }) {
     "==UserScript==",
     `@name     ${name}`,
     `@version  ${version}`,
-    "@grant    none",
+    "@grant    GM.getValue",
+    "@grant    GM.setValue",
     "@include https://*.wikipedia.org/wiki/*",
     "==/UserScript=="
   ];

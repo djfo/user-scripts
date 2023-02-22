@@ -19,7 +19,7 @@ const makeAttr =
     [attributeName, value];
 
 export const a = makeElem("a");
-export const button = makeElem("a");
+export const button = makeElem("button");
 export const div = makeElem("div");
 export const li = makeElem("li");
 export const ul = makeElem("ul");
@@ -27,4 +27,4 @@ export const ul = makeElem("ul");
 export const href = makeAttr("href");
 export const style = makeAttr("style");
 
-export const text = (value: string) => document.createTextNode(value);
+export const text = (value: string): Text => document.createTextNode(value);

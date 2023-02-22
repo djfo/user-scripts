@@ -39,14 +39,7 @@ function makeLanguageMenuHtml(langs: string[], map: M): HTMLElement {
     }
   });
 
-  return div(
-    [
-      style(
-        "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
-      ),
-    ],
-    [ul([style("list-style: none; margin: 0; padding: 0")], lis)]
-  );
+  return ul([style("list-style: none; margin: 0; padding: 0")], lis);
 }
 
 function parseLanguageCodesThrows(raw: string): string[] {
@@ -106,7 +99,7 @@ async function getUserLanguageCodes(): Promise<string[]> {
   }
 }
 
-function makeConfiugreButton(): HTMLElement {
+function makeConfigureButton(): HTMLElement {
   const button_ = button([], [text("\u2699")]);
   button_.addEventListener("click", async () => {
     const userLanguageCodes = await getUserLanguageCodes();
@@ -133,7 +126,14 @@ async function init(): Promise<void> {
   const map = makeMap(links, langs);
 
   document.body.appendChild(
-    div([], [makeLanguageMenuHtml(langs, map), makeConfiugreButton()])
+    div(
+      [
+        style(
+          "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
+        ),
+      ],
+      [makeLanguageMenuHtml(langs, map), makeConfigureButton()]
+    )
   );
 
   const bindings = new Map(
@@ -152,7 +152,8 @@ async function init(): Promise<void> {
       const lang = binding;
       const value = map.get(lang);
       if (value !== undefined) {
-        window.location.replace(value.href);
+        // window.location.replace(value.href);
+        window.location.href = value.href;
       }
     }
   });
