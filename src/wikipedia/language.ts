@@ -31,31 +31,42 @@ function makeLanguageMenuHtml(langs: string[], map: M) {
 
     if (value !== undefined) {
       const { href: href_ } = value;
-      return li([style(baseStyle + "; font-weight: bold")], [a([href(href_)], children)]);
+      return li(
+        [style(baseStyle + "; font-weight: bold")],
+        [a([href(href_)], children)]
+      );
     } else {
       return li([style(baseStyle + "; color: gray")], children);
     }
   });
 
   return div(
-    [style("position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm")],
+    [
+      style(
+        "position: fixed; top: 0; right: 0; background: yellow; z-index: 1000; padding: 5mm"
+      ),
+    ],
     [ul([style("list-style: none; margin: 0; padding: 0")], lis)]
   );
 }
 
 function parseLanguageCodesThrows(raw: string): string[] {
   const parts = raw.split(/,/);
-  const filtered = parts.flatMap(part => {
+  const filtered = parts.flatMap((part) => {
     const trimmed = part.trim();
     return trimmed.length === 0 ? [] : [trimmed];
   });
   if (filtered.length > 9) {
-    throw new Error("Too many language codes. At most 9 language codes are allowed.");
+    throw new Error(
+      "Too many language codes. At most 9 language codes are allowed."
+    );
   }
   const re = /^[a-z]+$/;
-  const invalid = filtered.filter(part => !re.test(part));
+  const invalid = filtered.filter((part) => !re.test(part));
   if (invalid.length > 0) {
-    const message = `The following language codes are invalid: ${invalid.join(", ")}.`;
+    const message = `The following language codes are invalid: ${invalid.join(
+      ", "
+    )}.`;
     throw new Error(message);
   }
   return filtered;
@@ -72,7 +83,17 @@ function setUserLanguageCodesRaw(raw: string): Promise<void> {
 }
 
 async function getUserLanguageCodes(): Promise<string[]> {
-  const defaultLanguageCodes = ["en", "fr", "de", "ja", "es", "ru", "pt", "it", "zh"];
+  const defaultLanguageCodes = [
+    "en",
+    "fr",
+    "de",
+    "ja",
+    "es",
+    "ru",
+    "pt",
+    "it",
+    "zh",
+  ];
   try {
     const raw = await GM.getValue("languageCodes");
     if (typeof raw !== "string") {
@@ -111,10 +132,9 @@ async function init(): Promise<void> {
   const links = getInterLanguageLinks();
   const map = makeMap(links, langs);
 
-  document.body.appendChild(div(
-    [],
-    [makeLanguageMenuHtml(langs, map), makeConfiugreButton()]
-  ));
+  document.body.appendChild(
+    div([], [makeLanguageMenuHtml(langs, map), makeConfiugreButton()])
+  );
 
   const bindings = new Map(
     langs.map((lang, index) => [keyCode1 + index, lang])

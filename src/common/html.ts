@@ -1,22 +1,22 @@
 type Attr = [string, string];
-type Attrs = Attr[];
 
 type Childs = (HTMLElement | Text)[];
 
-const makeElem = (
-  tagName: string) => (attributes: Attrs,
-  children: Childs
-): HTMLElement => {
-  const elem = document.createElement(tagName);
-  for (const [key, value] of attributes) {
-    elem.setAttribute(key, value);
-  }
-  elem.append(...children);
-  return elem;
-}
+const makeElem =
+  (tagName: string) =>
+  (attributes: Attr[], children: Childs): HTMLElement => {
+    const elem = document.createElement(tagName);
+    for (const [key, value] of attributes) {
+      elem.setAttribute(key, value);
+    }
+    elem.append(...children);
+    return elem;
+  };
 
-const makeAttr = (attributeName: string) =>
-  (value: string): Attr => [attributeName, value];
+const makeAttr =
+  (attributeName: string) =>
+  (value: string): Attr =>
+    [attributeName, value];
 
 export const a = makeElem("a");
 export const button = makeElem("a");
