@@ -49,6 +49,9 @@ function parseLanguageCodesThrows(raw: string): string[] {
     const trimmed = part.trim();
     return trimmed.length === 0 ? [] : [trimmed];
   });
+  if (filtered.length > 9) {
+    throw new Error("Too many language codes. At most 9 language codes are allowed.");
+  }
   const re = /^[a-z]+$/;
   const invalid = filtered.filter(part => !re.test(part));
   if (invalid.length > 0) {
