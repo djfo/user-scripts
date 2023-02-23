@@ -50,7 +50,6 @@ export async function getUserLanguageCodes(): Promise<string[]> {
     }
     return parseLanguageCodesThrows(raw);
   } catch {
-    console.error("Failed to get language codes from user defaults.");
     return defaultLanguageCodes;
   }
 }
