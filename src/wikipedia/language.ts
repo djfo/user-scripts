@@ -1,5 +1,5 @@
 import { zip } from "../common/array";
-import { a, button, div, href, li, style, text, ul } from "../common/html";
+import { a, button, div, href, li, style, styled, text, ul } from "../common/html";
 import { getUserLanguageCodes, setUserLanguageCodesRaw } from "./user-defaults";
 
 function getInterLanguageLinks(): HTMLAnchorElement[] {
@@ -32,14 +32,15 @@ function makeLanguageMenuHtml(languageCodes: string[], map: M): HTMLElement {
 
     const baseStyle = "margin: 0; padding: 0";
     const children = [text(`${index + 1} ${languageCode}`)];
+    const baseLi = styled(li, baseStyle);
 
     if (value !== undefined) {
-      return li(
-        [style(baseStyle + "; font-weight: bold")],
+      return baseLi(
+        [style("font-weight: bold")],
         [a([href(value.href)], children)]
       );
     } else {
-      return li([style(baseStyle + "; opacity: 0.3")], children);
+      return baseLi([style("opacity: 0.3")], children);
     }
   });
 
