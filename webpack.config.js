@@ -34,5 +34,6 @@ module.exports = async (env) => {
         raw: true,
       }),
     ],
+    mode: "production"
   };
 };
